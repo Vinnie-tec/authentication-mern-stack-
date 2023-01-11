@@ -28,7 +28,7 @@ const signup = async (req, res, next) => {
   } catch (err) {
     console.log(err);
   }
-
+  console.log(`created ${user.name}`);
   return res.status(201).json({ message: user });
 };
 
@@ -61,6 +61,7 @@ const login = async (req, res, next) => {
     httpOnly: true,
     sameSite: "lax",
   });
+  console.log(`login ${existingUser.email}`);
   return res
     .status(201)
     .json({ message: "sucessfully login", user: existingUser, webToken });
@@ -71,14 +72,14 @@ const verifyToken = (req, res, next) => {
   // const token = headers.split(" ")[1];
   const cookies = req.headers.cookie;
   const token = cookies.split("=")[1];
-  console.log(token); 
+  console.log(token);
   if (!token) {
     res.status(404).json({ message: "No token available" });
   }
   jwt.verify(String(token), JWT_SECRET_KEY, (err, user) => {
     if (err) {
       return res.status(400).json({ message: "Invalid token" });
-    } 
+    }
     console.log(user.id);
     req.id = user.id;
   });
@@ -95,11 +96,15 @@ const getUser = async (req, res, next) => {
     return new Error(error);
   }
   if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    res.status(404).json({ message: "User not found" });
+    return;
   }
-
-  return res.status(200).json({ user });
+  console.log(user);
+  res.status(200).json({ user });
+  return;
 };
+
+// const refreshToken
 
 exports.signup = signup;
 exports.login = login;
