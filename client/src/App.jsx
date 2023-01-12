@@ -1,12 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import Login from "./components/Login";
-import SignUp from "./components/SignUp";
+import Signup from "./components/SignUp";
 import Welcome from "./components/Welcome";
 
 function App() {
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  console.log(isLoggedIn);
   return (
     <React.Fragment>
       <header>
@@ -15,8 +18,8 @@ function App() {
       <main>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/user" element={<Welcome />} />
+          <Route path="/signup" element={<Signup />} />
+          {isLoggedIn && <Route path="/user" element={<Welcome />} />}{" "}
         </Routes>
       </main>
     </React.Fragment>

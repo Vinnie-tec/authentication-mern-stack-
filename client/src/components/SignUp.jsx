@@ -1,21 +1,20 @@
-import { useState } from "react";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-import { Box, Button, TextField, Typography } from "@mui/material";
-
-const SignUp = () => {
+const Signup = () => {
   const history = useNavigate();
-
-  const [inputs, setInputs] = useState({ name: "", email: "", password: "" });
-
+  const [inputs, setInputs] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const handleChange = (e) => {
     setInputs((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
-
   const sendRequest = async () => {
     const res = await axios
       .post("http://localhost:5000/api/signup", {
@@ -27,13 +26,11 @@ const SignUp = () => {
     const data = await res.data;
     return data;
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // send http request
     sendRequest().then(() => history("/login"));
   };
-
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -46,13 +43,14 @@ const SignUp = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <Typography variant="h2">Sign up</Typography>
+          <Typography variant="h2">Signup</Typography>
+
           <TextField
             name="name"
             onChange={handleChange}
             value={inputs.name}
             variant="outlined"
-            placeholder="name"
+            placeholder="Name"
             margin="normal"
           />
           <TextField
@@ -61,7 +59,7 @@ const SignUp = () => {
             type={"email"}
             value={inputs.email}
             variant="outlined"
-            placeholder="email"
+            placeholder="Email"
             margin="normal"
           />
           <TextField
@@ -70,11 +68,11 @@ const SignUp = () => {
             type="password"
             value={inputs.password}
             variant="outlined"
-            placeholder="password"
+            placeholder="Password"
             margin="normal"
           />
           <Button variant="contained" type="submit">
-            Sign up
+            Signup
           </Button>
         </Box>
       </form>
@@ -82,4 +80,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signup;
